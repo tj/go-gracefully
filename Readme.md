@@ -11,6 +11,15 @@
 $ go get github.com/visionmedia/go-gracefully
 ```
 
+## Example
+
+  Typically something like:
+
+```go
+<-Shutdown()
+w.Stop()
+```
+
 # License
 
  MIT
