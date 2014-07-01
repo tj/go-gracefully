@@ -16,7 +16,8 @@ $ go get github.com/visionmedia/go-gracefully
   Typically something like:
 
 ```go
-<-Shutdown()
+w.Start()
+Shutdown()
 w.Stop()
 ```
 
