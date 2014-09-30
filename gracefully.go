@@ -7,11 +7,11 @@ import (
 	"syscall"
 )
 
-// Graceful shutdown utility. Block until SIGINT or SIGQUIT
+// Graceful shutdown utility. Block until SIGINT, SIGTERM, or SIGQUIT
 // is trapped, return for shutdown and force exit on second signal.
 func Shutdown() {
 	ch := make(chan os.Signal, 2)
-	signal.Notify(ch, syscall.SIGINT, syscall.SIGQUIT)
+	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 
 	go func() {
 		sig := <-ch
