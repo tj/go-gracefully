@@ -17,7 +17,8 @@ $ go get github.com/tj/go-gracefully
 
 ```go
 w.Start()
-Shutdown()
+gracefully.Timeout = 10 * time.Second
+gracefully.Shutdown()
 w.Stop()
 ```
 

@@ -5,21 +5,26 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 )
 
-// Graceful shutdown utility. Block until SIGINT, SIGTERM, or SIGQUIT
-// is trapped, return for shutdown and force exit on second signal.
+var (
+	Timeout = time.Minute
+	Signals = []os.Signal{syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT}
+)
+
+// Shutdown gracefully, or force exit after two consecutive signals.
 func Shutdown() {
 	ch := make(chan os.Signal, 2)
-	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+	signal.Notify(ch, Signals...)
 
-	sig := <-ch
-	log.Printf("signal received: %s", sig)
-
+	log.Printf("received signal %s: terminating in %s", <-ch, Timeout)
 	go func() {
-		sig := <-ch
-		log.Printf("second signal received: %s", sig)
-		log.Printf("forcing exit")
-		os.Exit(1)
+		select {
+		case <-time.After(Timeout):
+			log.Fatalf("timeout reached: terminating")
+		case s := <-ch:
+			log.Fatalf("received signal %s: terminating", s)
+		}
 	}()
 }
