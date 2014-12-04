@@ -22,6 +22,4 @@ func Shutdown() {
 		log.Printf("forcing exit")
 		os.Exit(1)
 	}()
-
-	return
 }
