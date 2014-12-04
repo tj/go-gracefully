@@ -13,6 +13,9 @@ func Shutdown() {
 	ch := make(chan os.Signal, 2)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 
+	sig := <-ch
+	log.Printf("signal received: %s", sig)
+
 	go func() {
 		sig := <-ch
 		log.Printf("second signal received: %s", sig)
@@ -20,7 +23,5 @@ func Shutdown() {
 		os.Exit(1)
 	}()
 
-	sig := <-ch
-	log.Printf("signal received: %s", sig)
 	return
 }
