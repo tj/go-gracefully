@@ -16,6 +16,9 @@ func Shutdown() {
 	sig := <-ch
 	log.Printf("signal received: %s", sig)
 
+	sig := <-ch
+	log.Printf("signal received: %s", sig)
+
 	go func() {
 		sig := <-ch
 		log.Printf("second signal received: %s", sig)
