@@ -18,7 +18,9 @@ func Shutdown() {
 	ch := make(chan os.Signal, 2)
 	signal.Notify(ch, Signals...)
 
-	log.Printf("received signal %s: terminating in %s", <-ch, Timeout)
+	log.Printf("received signal %s", <-ch)
+	log.Printf("terminating in %s", Timeout)
+
 	go func() {
 		select {
 		case <-time.After(Timeout):
